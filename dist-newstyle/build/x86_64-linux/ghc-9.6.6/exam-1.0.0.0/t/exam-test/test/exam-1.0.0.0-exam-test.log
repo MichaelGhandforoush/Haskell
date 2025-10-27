@@ -1,0 +1,129 @@
+Test suite exam-test: RUNNING...
+Tests
+  KVDB
+    put 1, get 1:                                                                OK
+    put (1,0), put(0,1), get 1:                                                  OK
+    put (1,0), put (1, 10) get 1:                                                OK
+    put (k,0), put (a, 10) get k:                                                OK
+    Thread with delay puts 0,10, kvget 0:                                        OK (1.00s)
+  APL
+    Pure interpreter
+      State (unknown key):                                                       OK
+      (e1,e2):                                                                   OK
+      (1/0,e2):                                                                  OK
+      let x = (1,2) in x.0:                                                      OK
+      (1,2).1:                                                                   OK
+      () #empty tuple:                                                           OK
+      ().0:                                                                      OK
+      (1,2,3).4:                                                                 OK
+      (1,2).2:                                                                   OK
+      For loop using bindings:                                                   OK
+      For loop using p in bound:                                                 OK
+      For loop:                                                                  OK
+      loop x = 1 for i < 5 do x * 2:                                             OK
+      loop x = (1,10) while if (x.1 == 0) then false else true do (x.0*2,x.1-1): OK
+      loop x = 1 while x == 1 do x (infinite loop):                              TIMEOUT (3.02s)
+        Timed out after 3s
+        Use -p '/loop x = 1 while x == 1 do x (infinite loop)/' to rerun this test only.
+      For loop invalid bound:                                                    OK
+      e1 && e2:                                                                  OK
+      e1 || e2:                                                                  OK
+      e1 || e2 (first fails):                                                    OK
+      e1 || e2 (second fails):                                                   OK
+      e1 && e2 (first fails):                                                    OK
+      e1 && e2 (second fails):                                                   OK
+      e1 || e2 (first fails with div):                                           OK
+      e1 || e2 (both fail):                                                      OK
+      e1 || e2 (both fail with div):                                             OK
+      e1 $$ e2 (both fail with div):                                             OK
+      e1 || e2 (both fail):                                                      OK
+      kvget invalid:                                                             OK
+      put(1,1) && get 1 shared state:                                            OK
+      put(1,1) || get 1 shared state:                                            OK
+      Project fails when not tuple :                                             OK
+    Simulated concurrent interpreter
+      OneOf inifinite loop and finite loop:                                      OK
+      Nested OneOf inifinite loop and finite loop:                               OK
+      Nested OneOf (OneOf for for) (OneOf for for):                              OK
+      Nested OneOf (OneOf for_err for) (OneOf for for):                          OK
+      Nested OneOf (OneOf for_err for_err) (OneOf for for):                      OK
+      Nested OneOf (OneOf for for) (OneOf for_err for_err):                      OK
+      Nested OneOf (OneOf for_err for_err) (OneOf for_err for_err):              OK
+      Nested OneOf (OneOf for5 for5) (for9).:                                    OK
+      OneOf (OneOf (inf loop) (fin loop )) (fin loop):                           OK
+      OneOf (OneOf (inf loop) (inf loop )) (fin loop):                           OK
+      OneOf inifinite loop and finite loop:                                      OK
+      OneOf error in second expression:                                          OK
+      BothOf 2 equal finite loop:                                                OK
+      BothOf 2 finite loop ending at different times:                            OK
+      BothOf error in second expression:                                         OK
+      BothOf erros in each expression that should fail at the same step:         OK
+      Nested BothOf BothOf(for for) BothOf(for for):                             OK
+      Nested BothOf BothOf(for_err for) BothOf(for for):                         OK
+      Nested BothOf BothOf(for_err for_err) BothOf(for for):                     OK
+      Nested BothOf BothOf(for_err for_err) BothOf(for_err for_err):             OK
+      get 0 && put 0 true:                                                       OK
+      get 0 + 1 && put 0 2:                                                      OK
+      put (get 0) 1 && put 0 2:                                                  OK
+      put (get 0) 1 && let x = put 0 2 in get 2:                                 OK
+      put (0):                                                                   OK
+      get (0):                                                                   OK
+      put (0) get(0):                                                            OK
+      (e1,e2) - Correct tuple eval order:                                        OK
+      Test shared state:                                                         OK
+      Test deadlock:                                                             TIMEOUT (3.04s)
+        Timed out after 3s
+        Use -p '/Test deadlock/' to rerun this test only.
+      put(1,1) && get 1 shared state:                                            OK
+      put(1,1) || get 1 shared state:                                            OK
+      Project fails when not tuple :                                             OK
+    Concurrent interpreter
+      1||2:                                                                      OK
+      OneOf inifinite loop and infinite loop:                                    TIMEOUT (3.04s)
+        Timed out after 3s
+        Use -p '/OneOf inifinite loop and infinite loop/' to rerun this test only.
+      put(1,1) && get 1 shared state:                                            OK (0.40s)
+      put(1,1) || get 1 shared state:                                            OK (0.34s)
+      Project fails when not tuple :                                             OK (0.04s)
+    Parsing
+      x+y:                                                                       OK (0.06s)
+      x+:                                                                        OK (0.06s)
+      ():                                                                        OK (0.06s)
+      (x, y):                                                                    OK (0.06s)
+      (x , y):                                                                   OK (0.06s)
+      (x/y, y):                                                                  OK (0.06s)
+      (x , y):                                                                   OK (0.06s)
+      (x):                                                                       OK (0.10s)
+      (x, y, z):                                                                 OK (0.06s)
+      ((x, y), z):                                                               OK (0.06s)
+      x :                                                                        OK (0.06s)
+      x.0:                                                                       OK (0.06s)
+      let x = (1,2) in x.0:                                                      OK (0.06s)
+      (1,2).1:                                                                   OK (0.06s)
+      loop x = 1 for i < 5 do x * 2:                                             OK (0.06s)
+      loop x = 1 while x == 1 do x:                                              OK (0.06s)
+      (1+2) && (3+4):                                                            OK (0.06s)
+      1+2 && 3+4:                                                                OK (0.10s)
+      (1+2) || (3+4+5+6):                                                        OK (0.06s)
+      (x+y).0:                                                                   OK (0.06s)
+      (x+y).1:                                                                   OK (0.06s)
+      (x,y).2:                                                                   OK (0.06s)
+      (if x then y else z, a):                                                   OK (0.06s)
+      (a b):                                                                     OK (0.06s)
+      (()):                                                                      OK (0.04s)
+      ((),()):                                                                   OK (0.06s)
+      (x,y,z)+(a,b,c,d):                                                         OK (0.06s)
+      x|:                                                                        OK (0.06s)
+      x|y:                                                                       OK (0.06s)
+      x&:                                                                        OK (0.06s)
+      x||:                                                                       OK (0.06s)
+      x&&:                                                                       OK (0.06s)
+      x||y:                                                                      OK (0.06s)
+      x&&y:                                                                      OK (0.06s)
+      x||y&&x&&y:                                                                OK (0.06s)
+      x||y+z:                                                                    OK (0.06s)
+      loop x = 1 while x == 1 do x||y:                                           OK (0.06s)
+
+3 out of 111 tests failed (13.49s)
+Test suite exam-test: FAIL
+Test suite logged to: /mnt/c/users/ghmic/documents/ap/exam-handout/exam-handout/dist-newstyle/build/x86_64-linux/ghc-9.6.6/exam-1.0.0.0/t/exam-test/test/exam-1.0.0.0-exam-test.log
